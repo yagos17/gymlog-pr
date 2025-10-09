@@ -45,7 +45,7 @@ python app.py
 
 ## 👨‍💻 Equipe
 - Guilherme Libório Camargo - RA: 425107688 (GitHub)
-- Adriano dos Santos Romualdo - RA: 924116889 (GitHub)
+- Adriano dos Santos Romualdo - RA: 924116889 ([GitHub](https://github.com/Adriano-sr))
 - Matheus Morais Ferraz - RA: 425104705 (GitHub)
 - Yago Sona Silva - RA: 424108333 ([GitHub](https://github.com/yagos17))
 

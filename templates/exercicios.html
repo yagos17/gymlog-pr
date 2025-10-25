@@ -2,7 +2,6 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GymLog PR - Meus Exercícios</title>
     <style>
         body { font-family: sans-serif; max-width: 800px; margin: 20px auto; padding: 15px; background-color: #f4f4f4; }
@@ -20,7 +19,7 @@
     <h1>GymLog PR</h1>
     <h2>Cadastrar Novo Exercício</h2>
 
-    <form action="{{ url_for('home') }}" method="post">
+    <form action="{{ url_for('home') }}" method="POST">
         <label for="nome">Nome do Exercício:</label><br>
         <input type="text" id="nome" name="nome" required>
 
@@ -33,17 +32,17 @@
     <h2>Minha Biblioteca de Exercícios</h2>
 
     <ul>
-        {% for exercicio in exercicio %}
-        <li>
-            <strong>{{ exercicio}.nome }</strong>
-            {% if exercicio.grupo_muscular %}
-                <br><small>Grupo Muscular: {{ exercicio.grupo_muscular }}</small>
+        {% for exercicio in exercicios %}
+            <li>
+                <strong>{{ exercicio.nome }}</strong>
+                {% if exercicio.grupo_muscular %}
+                    <br><small>Grupo Muscular: {{ exercicio.grupo_muscular }}</small>
                 {% endif %}
-        </li>
-    {% else %}
-        <li>Nenhum exercicio cadastrado ainda.</li>
-    {%  endfor %}
+            </li>
+        {% else %}
+            <li>Nenhum exercício cadastrado ainda.</li>
+        {% endfor %}
     </ul>
-    
+
 </body>
 </html>

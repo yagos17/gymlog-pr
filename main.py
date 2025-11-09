@@ -29,6 +29,31 @@ def home():
         exercicios = Exercicio.query.order_by(Exercicio.nome).all()
         return render_template('exercicios.html', exercicios=exercicios)
 
+@app.route('/delete/<int:id>')
+def delete_exercicio(id):
+    exercicio = Exercicio.query.get_or_404(id)
+    try:
+        db.session.delete(exercicio)
+        db.session.commit()
+        return redirect(url_for('home'))
+    except Exception as e:
+        return f"Erro ao excluir exercício: {e}"
+    
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit_exercicio(id):
+    exercicio = Exercicio.query.get_or_404(id)
+    if request.method == 'POST':
+        exercicio.nome = request.form['nome']
+        exercicio.grupo_muscular = request.form['grupo_muscular']
+        try:
+            db.session.commit()
+            return redirect(url_for('home'))
+        except Exception as e:
+            return f"Erro ao editar exercício: {e}"
+    
+    else:
+        return render_template('editar_exercicio.html', exercicio=exercicio)
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

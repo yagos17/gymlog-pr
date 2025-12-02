@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from db import db
 from models import Exercicio, SessaoTreino, SerieExercicio
 from datetime import date, datetime
@@ -84,6 +84,28 @@ def adicionar_series(sessao_id):
                            sessao=sessao, 
                            exercicios=exercicios_disponiveis,
                            series=series_da_sessao)
+
+@app.route('/api/exercicio/<int:exercicio_id>/progresso')
+def progresso_exercicio_json(exercicio_id):
+
+    series = SerieExercicio.query.filter_by(exercicio_id=exercicio_id).all()
+
+    dados_grafico = {}
+
+    for serie in series:
+        data_str = serie.sessao.data.strftime('%Y-%m-%d')
+        carga = serie.carga if serie.carga is not None else 0.0
+
+        if data_str not in dados_grafico or carga > dados_grafico[data_str]:
+            dados_grafico[data_str] = carga
+
+    datas = sorted(dados_grafico.keys())
+    cargas = [dados_grafico[data] for data in datas]
+
+    return jsonify({
+        'labels': datas,
+        'data': cargas
+    })
 
 @app.route('/delete/<int:id>')
 def delete_exercicio(id):

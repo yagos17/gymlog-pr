@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from db import db
-from models import Exercicio
+from models import Exercicio, SessaoTreino
+from datetime import date, datetime
 
 app = Flask(__name__)
 
@@ -28,6 +29,26 @@ def home():
     else:
         exercicios = Exercicio.query.order_by(Exercicio.nome).all()
         return render_template('exercicios.html', exercicios=exercicios)
+
+@app.route('/registrar_treino', methods=['GET', 'POST'])
+def registrar_treino():
+    if request.method == 'POST':
+        try:
+            data_str = request.form['data']
+            data_sessao = datetime.strftime(data_str, '%Y-%m-%d').date()
+            
+            nova_sessao = SessaoTreino(data=data_sessao)
+            db.session.add(nova_sessao)
+            db.session.commit()
+
+            return redirect(url_for('home'))
+
+        except Exception as e:
+            db.session.rollback()
+            return f"Erro ao registrar sessão: {e}"
+        
+    today_date = date.today().isoformat()
+    return render_template('registrar_treino.html', today_date=today_date)
 
 @app.route('/delete/<int:id>')
 def delete_exercicio(id):

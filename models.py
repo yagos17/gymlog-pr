@@ -23,6 +23,6 @@ class SerieExercicio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     repeticoes = db.Column(db.Integer, nullable=False)
     carga = db.Column(db.Float, nullable=True)
-    exercicio_id = db.Column(db.Integer, db.ForeignKey('exercicios.id'), nullable=False)
+    exercicio_id = db.Column(db.Integer, db.ForeignKey('exercicios.id', ondelete='CASCADE'), nullable=False)
     exercicio = db.relationship('Exercicio', backref='series')
     sessao_id = db.Column(db.Integer, db.ForeignKey('sessao_treino.id'), nullable=False)

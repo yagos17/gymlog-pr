@@ -13,7 +13,7 @@ class Exercicio(db.Model):
 class SessaoTreino(db.Model):
     __tablename__ = 'sessao_treino'
 
-    id = db.Column(db.integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.Date, nullable=False)
     series = db.relationship('SerieExercicio', backref='sessao', lazy=True)
 

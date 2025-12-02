@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from db import db
-from models import Exercicio, SessaoTreino
+from models import Exercicio, SessaoTreino, SerieExercicio
 from datetime import date, datetime
 
 app = Flask(__name__)
@@ -35,13 +35,13 @@ def registrar_treino():
     if request.method == 'POST':
         try:
             data_str = request.form['data']
-            data_sessao = datetime.strftime(data_str, '%Y-%m-%d').date()
-            
+            data_sessao = datetime.strptime(data_str, '%Y-%m-%d').date()
+
             nova_sessao = SessaoTreino(data=data_sessao)
             db.session.add(nova_sessao)
             db.session.commit()
 
-            return redirect(url_for('home'))
+            return redirect(url_for('adicionar_series', sessao_id=nova_sessao.id)) 
 
         except Exception as e:
             db.session.rollback()
@@ -49,6 +49,41 @@ def registrar_treino():
         
     today_date = date.today().isoformat()
     return render_template('registrar_treino.html', today_date=today_date)
+
+@app.route('/treino/<int:sessao_id>/adicionar_series', methods=['GET', 'POST'])
+def adicionar_series(sessao_id):
+
+    sessao = SessaoTreino.query.get_or_404(sessao_id)
+    exercicios_disponiveis = Exercicio.query.order_by(Exercicio.nome).all()
+    
+    if request.method == 'POST':
+        exercicio_id = request.form['exercicio_id']
+        repeticoes = request.form['repeticoes']
+        carga = request.form.get('carga') 
+
+        try:
+            nova_serie = SerieExercicio(
+                sessao_id=sessao_id,
+                exercicio_id=exercicio_id,
+                repeticoes=repeticoes,
+                carga=carga if carga else None 
+            )
+            
+            db.session.add(nova_serie)
+            db.session.commit()
+            
+            return redirect(url_for('adicionar_series', sessao_id=sessao_id))
+            
+        except Exception as e:
+            db.session.rollback()
+            return f"Erro ao adicionar série: {e}"
+
+    series_da_sessao = SerieExercicio.query.filter_by(sessao_id=sessao_id).order_by(SerieExercicio.id).all()
+    
+    return render_template('adicionar_series.html', 
+                           sessao=sessao, 
+                           exercicios=exercicios_disponiveis,
+                           series=series_da_sessao)
 
 @app.route('/delete/<int:id>')
 def delete_exercicio(id):

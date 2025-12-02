@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Treino de {{ sessao.data.strftime('%d/%m/%Y') }}</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background-color: #f9f9f9; }
+        h1, h2 { color: #333; }
+        form { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px;}
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; }
+        select, input[type="number"], input[type="submit"] { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+        input[type="submit"] { background-color: #4CAF50; color: white; cursor: pointer; border: none; }
+        input[type="submit"]:hover { background-color: #45a049; }
+        .series-list { list-style: none; padding: 0; }
+        .series-list li { background: white; padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+        .series-details { flex-grow: 1; }
+        .voltar a { color: #24a; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>Sessão de Treino - {{ sessao.data.strftime('%d/%m/%Y') }}</h1>
+    
+    <h2>Adicionar Nova Série</h2>
+    
+    <form method="POST">
+        <label for="exercicio_id">Exercício:</label>
+        <select id="exercicio_id" name="exercicio_id" required>
+            <option value="">-- Selecione um Exercício --</option>
+            {% for exercicio in exercicios %}
+                <option value="{{ exercicio.id }}">{{ exercicio.nome }} ({{ exercicio.grupo_muscular or 'N/A' }})</option>
+            {% endfor %}
+        </select>
+
+        <label for="repeticoes">Repetições:</label>
+        <input type="number" id="repeticoes" name="repeticoes" required min="1">
+
+        <label for="carga">Carga (Kg, opcional):</label>
+        <input type="number" id="carga" name="carga" min="0" step="0.1">
+
+        <input type="submit" value="Adicionar Série">
+    </form>
+
+    <hr>
+
+    <h2>Séries Registradas</h2>
+    
+    {% if series %}
+        <ul class="series-list">
+            {% for serie in series %}
+                <li>
+                    <div class="series-details">
+                        <strong>{{ serie.exercicio.nome }}</strong>: 
+                        {{ serie.repeticoes }} reps
+                        {% if serie.carga %}
+                             com {{ "{:.1f}".format(serie.carga) }} Kg
+                        {% endif %}
+                    </div>
+                    </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Nenhuma série registrada para esta sessão ainda.</p>
+    {% endif %}
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('home') }}" class="voltar">Voltar (Finalizar Treino)</a>
+    </div>
+
+</body>
+</html>

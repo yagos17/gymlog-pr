@@ -15,7 +15,7 @@ class SessaoTreino(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.Date, nullable=False)
-    series = db.relationship('SerieExercicio', backref='exercicio', cascade='all, delete-orphan', passive_deletes=True)
+    series = db.relationship('SerieExercicio', backref='series', cascade='all, delete-orphan', passive_deletes=True)
 
 class SerieExercicio(db.Model):
     __tablename__ = 'series_exercicio'

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Treino</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Iniciar Nova Sessão de Treino</h1>
+
+        <div class="card shadow-sm mx-auto" style="max-width: 500px;">
+            <div class="card-header bg-success text-white">
+                <h2 class="h5 mb-0">Definir Data</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="data" class="form-label">Data do Treino:</label>
+                        <input type="date" class="form-control" id="data" name="data" required value="{{ today_date }}">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success w-100">
+                        Iniciar Sessão
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('home') }}" class="btn btn-outline-secondary">
+                Voltar para a Biblioteca de Exercícios
+            </a>
+        </div>
+    </div>
+</body>
+</html>

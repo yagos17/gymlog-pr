@@ -102,7 +102,6 @@ def progresso_exercicio_json(id):
         data = s.sessao.data.strftime('%Y-%m-%d')
         carga = s.carga or 0
 
-        # pega a maior carga do dia
         if data not in dados or carga > dados[data]:
             dados[data] = carga
 

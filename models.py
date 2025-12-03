@@ -7,7 +7,6 @@ class Exercicio(db.Model):
     nome = db.Column(db.String(100), unique=True, nullable=False)
     grupo_muscular = db.Column(db.String(50))
 
-    # Agora as séries serão apagadas quando excluir o exercício
     series = db.relationship(
         'SerieExercicio',
         backref='exercicio',

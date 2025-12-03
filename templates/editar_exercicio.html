@@ -35,7 +35,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const dataUrl = "{{ url_for('progresso_exercicio_json', exercicio_id=exercicio.id) }}";
+            const dataUrl = "{{ url_for('progresso_exercicio_json', id=exercicio.id) }}";
 
             fetch(dataUrl)
                 .then(response => response.json())

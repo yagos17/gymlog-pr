@@ -6,7 +6,7 @@ db = SQLAlchemy()
 
 @event.listens_for(Engine, "connect")
 def set_sqlite_pragma(dbapi_connection, connection_record):
-    if dbapi_connection.engine.url.drivername == "sqlite": 
+    if connection_record.engine.url.drivername == "sqlite": 
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON")
         cursor.close()

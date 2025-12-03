@@ -2,10 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from datetime import datetime, date
 from db import db
 from models import Exercicio, SessaoTreino, SerieExercicio
+import os
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///gymlog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///gymlog.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
